@@ -12,12 +12,17 @@ import useStorage from '../../hooks/useStorage';
 export function ModalPassword({ password, handleClose }) {
   const { saveItem } = useStorage();
   const [copied, setCopied] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   async function copyPassword() {
     await Clipboard.setStringAsync(password);
-    await saveItem('@pass', password);
     setCopied(true);
-    setTimeout(() => setCopied(false, handleClose()), 1500);
+    setTimeout(() => setCopied(false), 1500);
+  }
+  async function handleSavePassword() {
+    await saveItem('@pass', password);
+    setSaved(true);
+    setTimeout(() => setSaved(false, handleClose()), 1500);
   }
   return (
     <View style={styles.container}>
@@ -27,15 +32,17 @@ export function ModalPassword({ password, handleClose }) {
           <Text style={styles.text}>{password}</Text>
         </Pressable>
         {copied && <Text style={styles.copiedText}>Senha copiada</Text>}
+
         <View style={styles.buttonArea}>
           <TouchableOpacity style={styles.button} onPress={handleClose}>
             <Text style={styles.buttonText}>Voltar</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={handleSavePassword}>
             <Text style={styles.buttonText}>Salvar senha</Text>
           </TouchableOpacity>
         </View>
+        {saved && <Text style={styles.copiedText}>Senha salva</Text>}
       </View>
     </View>
   );
@@ -84,7 +91,7 @@ const styles = StyleSheet.create({
   },
   buttonArea: {
     flexDirection: 'row',
-    width: '90%',
+    width: '80%',
     marginTop: 8,
     alignItems: 'center',
     justifyContent: 'space-between',

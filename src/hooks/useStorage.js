@@ -9,6 +9,7 @@ const useStorage = () => {
       return JSON.parse(passwords) || [];
     } catch (error) {
       console.log('Erro ao buscar', error);
+      return [];
     }
   };
 
@@ -16,9 +17,11 @@ const useStorage = () => {
   const saveItem = async (key, value) => {
     try {
       let passwords = await getItem(key);
-      passwords.push(value);
-
-      await AsyncStorage.setItem(key, JSON.stringify(passwords));
+      // Verificação senha duplicada
+      if (!passwords.includes(value)) {
+        passwords.push(value);
+        await AsyncStorage.setItem(key, JSON.stringify(passwords));
+      }
     } catch (error) {
       console.log('Erro ao salvar', error);
     }
@@ -35,7 +38,6 @@ const useStorage = () => {
 
       await AsyncStorage.setItem(key, JSON.stringify(myPasswords));
       return myPasswords;
-
     } catch (error) {
       console.log('Erro ao deletar', error);
     }

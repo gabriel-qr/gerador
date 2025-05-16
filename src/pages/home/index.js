@@ -11,7 +11,7 @@ import Slider from '@react-native-community/slider';
 import { ModalPassword } from '../../components/modal';
 
 // prettier-ignore
-let charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%¨&*';
+let charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*';
 
 export function Home() {
   // criação de useStates
